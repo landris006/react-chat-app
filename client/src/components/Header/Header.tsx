@@ -4,13 +4,13 @@ import React from 'react';
 
 const Header = () => {
   return (
-    <AppBar position="static">
+    <AppBar color="inherit" position="static">
       <Toolbar>
         <Typography variant="h2" paddingX={2}>
           Epikus messenger klón
         </Typography>
         <Button
-          variant="text"
+          variant="contained"
           size="large"
           sx={{ marginLeft: 'auto', color: 'white' }}
         >

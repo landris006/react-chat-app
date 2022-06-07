@@ -1,18 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Container } from '@mui/system';
-import {
-  Stack,
-  Typography,
-  TextField,
-  InputAdornment,
-  IconButton,
-} from '@mui/material';
-import SendIcon from '@mui/icons-material/Send';
+import { Stack, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import Message from './Message/Message';
 import './Conversation.scss';
 import { newMessage } from '../../reducers/messages';
-import { user } from '../../dummyMessages';
 import { io } from 'socket.io-client';
 import { getMessages } from '../../api/messages';
 import MessageInput from './MessageInput/MessageInput';
@@ -23,34 +15,9 @@ const Conversation = () => {
   const dispatch = useAppDispatch();
   const messages = useAppSelector(({ messages }) => messages);
 
-  let initialLoad = true;
-  const [newMessageContent, setNewMessageContent] = useState('');
+  const [initialLoad, setInitialLoad] = useState(true);
 
   const dummyDiv = useRef<HTMLDivElement>(null);
-
-  const handleKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key !== 'Enter') {
-      return;
-    }
-
-    handleSend();
-  };
-
-  const handleSend = () => {
-    if (!newMessageContent) {
-      return;
-    }
-
-    const newMessage: Message = {
-      content: newMessageContent,
-      from: user._id,
-      to: 'Everyone',
-    };
-
-    socket.emit('sendMessage', newMessage);
-
-    setNewMessageContent('');
-  };
 
   useEffect(() => {
     if (!initialLoad) {

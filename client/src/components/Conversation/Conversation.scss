@@ -1,0 +1,18 @@
+.message-container {
+  border-right: 1px solid grey;
+  border-left: 1px solid grey;
+  flex-grow: 1;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+
+  .messages-body {
+    justify-self: flex-end;
+    overflow: hidden;
+
+    .messages {
+      overflow-y: auto;
+    }
+  }
+}

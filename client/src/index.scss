@@ -1,0 +1,16 @@
+body {
+  margin: 0;
+  padding: 0;
+
+  #root {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    .wrapper {
+      display: flex;
+      flex-grow: 1;
+      overflow: hidden;
+    }
+  }
+}

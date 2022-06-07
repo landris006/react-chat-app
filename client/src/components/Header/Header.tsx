@@ -1,5 +1,4 @@
-import { Delete } from '@mui/icons-material';
-import { AppBar, Button, IconButton, Toolbar, Typography } from '@mui/material';
+import { AppBar, Button, Toolbar, Typography } from '@mui/material';
 import React from 'react';
 
 const Header = () => {

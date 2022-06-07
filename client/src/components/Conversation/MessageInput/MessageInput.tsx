@@ -23,7 +23,7 @@ const MessageInput = ({ socket }: { socket: Socket }) => {
     const newMessage: Message = {
       content: newMessageContent,
       from: user._id,
-      to: 'Everyone',
+      to: 'EVERYONE',
     };
 
     socket.emit('sendMessage', newMessage);

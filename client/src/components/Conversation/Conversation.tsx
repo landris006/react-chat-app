@@ -27,8 +27,8 @@ const Conversation = () => {
     getMessages().then((messages) => {
       dispatch(newMessage(messages));
     });
-    initialLoad = false;
-  }, [dispatch]);
+    setInitialLoad(false);
+  }, [dispatch, initialLoad]);
 
   useEffect(() => {
     socket.on('newMessage', (message) => {

@@ -5,13 +5,8 @@ import './Message.scss';
 
 const Message = ({ _id, content, createdAt, from, to }: Message) => {
   const isCurrentUser = Number(_id?.substring(5, 7)) % 2 === 0;
-  console.log(Number(_id?.substring(5, 7)));
 
-  const momentCreatedAt = moment(createdAt);
-  const wasCreatedToday = momentCreatedAt.diff(moment(), 'days') === 0;
-  const dateToShow = wasCreatedToday
-    ? `Today at ${momentCreatedAt.format('HH:mm')}`
-    : momentCreatedAt.format('mm:dd');
+  const dateToShow = moment(createdAt).calendar();
 
   return (
     <div className={`${isCurrentUser ? 'own-message' : ''}`}>

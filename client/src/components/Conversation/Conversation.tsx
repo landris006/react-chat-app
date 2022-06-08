@@ -15,19 +15,20 @@ const Conversation = () => {
   const dispatch = useAppDispatch();
   const messages = useAppSelector(({ messages }) => messages);
 
-  const [initialLoad, setInitialLoad] = useState(true);
-
   const dummyDiv = useRef<HTMLDivElement>(null);
 
+  let initialLoad = true;
   useEffect(() => {
     if (!initialLoad) {
       return;
     }
+    console.log('RAN');
 
     getMessages((messages) => dispatch(newMessage(messages)));
 
-    setInitialLoad(false);
-  }, [dispatch, initialLoad]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    initialLoad = false;
+  }, []);
 
   useEffect(() => {
     socket.on('newMessage', (message) => {

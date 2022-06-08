@@ -9,7 +9,9 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import { login, signUp } from '../../api/auth';
+import { useSnackbar } from 'notistack';
 import './Auth.scss';
+import { AxiosError } from 'axios';
 
 const Auth = () => {
   const [isSignup, setIsSignup] = useState(false);
@@ -24,6 +26,8 @@ const Auth = () => {
     password: false,
     confirmPassword: false,
   });
+
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const handleInput = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -46,6 +50,9 @@ const Auth = () => {
     });
 
     if (!username || !password || (isSignup && !confirmPassword)) {
+      enqueueSnackbar('Please fill in the required fields!', {
+        variant: 'error',
+      });
       return;
     }
 
@@ -53,17 +60,45 @@ const Auth = () => {
       try {
         await login({ username, password });
       } catch (error) {
+        if (error instanceof AxiosError) {
+          enqueueSnackbar(error.message, {
+            variant: 'error',
+            persist: true,
+          });
+        } else {
+          enqueueSnackbar('An error occured!', {
+            variant: 'error',
+          });
+        }
+
         console.log(error);
       }
       return;
     }
 
     if (password !== confirmPassword) {
-      /* TODO: üzenet */
+      setEmptyFields({ ...emptyFields, password: true, confirmPassword: true });
+      enqueueSnackbar('Passwords do not match!', {
+        variant: 'error',
+      });
       return;
     }
 
-    signUp(formData);
+    try {
+      await signUp(formData);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        enqueueSnackbar(error.message, {
+          variant: 'error',
+        });
+      } else {
+        enqueueSnackbar('An error occured!', {
+          variant: 'error',
+        });
+      }
+
+      console.log(error);
+    }
   };
 
   return (

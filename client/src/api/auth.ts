@@ -9,10 +9,10 @@ export const login = async (loginData: {
   await axios.post(`${url}/login`, loginData);
 };
 
-export const signUp = (signUpData: {
+export const signUp = async (signUpData: {
   username: string;
   password: string;
   confirmPassword: string;
 }) => {
-  axios.post(`${url}/login`, signUpData);
+  await axios.post(`${url}/login`, signUpData);
 };

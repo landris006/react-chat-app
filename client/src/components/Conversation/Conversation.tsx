@@ -24,9 +24,8 @@ const Conversation = () => {
       return;
     }
 
-    getMessages().then((messages) => {
-      dispatch(newMessage(messages));
-    });
+    getMessages((messages) => dispatch(newMessage(messages)));
+
     setInitialLoad(false);
   }, [dispatch, initialLoad]);
 

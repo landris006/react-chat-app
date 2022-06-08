@@ -1,0 +1,22 @@
+.auth-container {
+  align-items: center;
+  justify-content: center;
+
+  .auth-card {
+    padding: 1.5rem;
+    max-width: 31rem;
+  }
+
+  .auth-button {
+    margin: 0.5rem 0 1.5rem 0;
+  }
+
+  span {
+    font-weight: bolder;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--color-primary);
+    }
+  }
+}

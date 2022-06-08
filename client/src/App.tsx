@@ -1,16 +1,19 @@
 import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.scss';
-import Header from './components/Header/Header';
-import Conversation from './components/Conversation/Conversation';
+import Header from './pages/Header/Header';
+import Home from './pages/Home';
+import Authentication from './pages/Authentication/Authentication';
 
 function App() {
   return (
-    <>
+    <BrowserRouter>
       <Header />
-      <div className="wrapper">
-        <Conversation />
-      </div>
-    </>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/authentication" element={<Authentication />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

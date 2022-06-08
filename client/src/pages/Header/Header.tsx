@@ -1,5 +1,7 @@
 import { AppBar, Button, Toolbar, Typography } from '@mui/material';
 import React from 'react';
+import { Link } from 'react-router-dom';
+import './Header.scss';
 
 const Header = () => {
   return (
@@ -8,13 +10,11 @@ const Header = () => {
         <Typography variant="h2" paddingX={2}>
           Epikus messenger klón
         </Typography>
-        <Button
-          variant="contained"
-          size="large"
-          sx={{ marginLeft: 'auto', color: 'white' }}
-        >
-          login
-        </Button>
+        <Link to="/authentication" className="login-button">
+          <Button variant="contained" size="large">
+            login
+          </Button>
+        </Link>
       </Toolbar>
     </AppBar>
   );

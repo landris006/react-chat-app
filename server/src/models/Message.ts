@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 
 const messageSchema = new mongoose.Schema({
   content: { type: String, required: true },
@@ -7,4 +7,4 @@ const messageSchema = new mongoose.Schema({
   createdAt: { type: String, default: Date() },
 });
 
-export const Message = mongoose.model('Message', messageSchema);
+export const Message: Model<Message> = mongoose.model('Message', messageSchema);

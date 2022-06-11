@@ -4,10 +4,11 @@ import { createServer } from 'http';
 import cors from 'cors';
 import { messageHandler } from './handlers/messageHandler';
 import bodyParser from 'body-parser';
-import { userRoutes } from './routes/user';
+import { usersRoutes } from './routes/users';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import { messagesRoutes } from './routes/messages';
+import { User } from './models/User';
 
 dotenv.config();
 const PORT = process.env.PORT ?? 5000;
@@ -19,7 +20,7 @@ app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 app.use(cors());
 
 app.use('/messages', messagesRoutes);
-app.use('/user', userRoutes);
+app.use('/users', usersRoutes);
 
 const httpServer = createServer(app);
 
@@ -37,8 +38,8 @@ io.on('connection', (socket) => {
 mongoose
   .connect(CONNECTION_STRING)
   .then(() => {
-    httpServer.listen(PORT, () =>
-      console.log(`Server listening on port ${PORT}...`)
-    );
+    httpServer.listen(PORT, () => {
+      console.log(`Server listening on port ${PORT}...`);
+    });
   })
-  .catch((error) => console.log(error));
+  .catch((error) => console.error(error));

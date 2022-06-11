@@ -8,6 +8,7 @@ interface Message {
 
 interface User {
   _id: string;
-  name: string;
+  username: string;
+  password: string;
   createdAt: string;
 }

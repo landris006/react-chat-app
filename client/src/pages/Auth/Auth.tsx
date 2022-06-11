@@ -8,12 +8,18 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
-import { login, signUp } from '../../api/auth';
+import { login, signUp } from '../../api/users';
 import { useSnackbar } from 'notistack';
 import './Auth.scss';
 import { AxiosError } from 'axios';
+import { useAppDispatch, useErrorMessage } from '../../hooks';
+import { setCurrentUser } from '../../reducers/users';
+import { useNavigate } from 'react-router-dom';
 
 const Auth = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const [isSignup, setIsSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -27,7 +33,8 @@ const Auth = () => {
     confirmPassword: false,
   });
 
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
+  const { sendError } = useErrorMessage();
 
   const handleInput = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -50,54 +57,33 @@ const Auth = () => {
     });
 
     if (!username || !password || (isSignup && !confirmPassword)) {
-      enqueueSnackbar('Please fill in the required fields!', {
-        variant: 'error',
-      });
+      sendError('Please fill in the required fields!');
       return;
     }
 
     if (!isSignup) {
       try {
-        await login({ username, password });
+        const user = await login({ username, password });
+        dispatch(setCurrentUser(user));
+        navigate('/');
       } catch (error) {
-        if (error instanceof AxiosError) {
-          enqueueSnackbar(error.message, {
-            variant: 'error',
-            persist: true,
-          });
-        } else {
-          enqueueSnackbar('An error occured!', {
-            variant: 'error',
-          });
-        }
-
-        console.log(error);
+        sendError(error);
       }
       return;
     }
 
     if (password !== confirmPassword) {
       setEmptyFields({ ...emptyFields, password: true, confirmPassword: true });
-      enqueueSnackbar('Passwords do not match!', {
-        variant: 'error',
-      });
+      sendError('Passwords do not match...');
       return;
     }
 
     try {
-      await signUp(formData);
+      const user = await signUp(formData);
+      dispatch(setCurrentUser(user));
+      navigate('/');
     } catch (error) {
-      if (error instanceof AxiosError) {
-        enqueueSnackbar(error.message, {
-          variant: 'error',
-        });
-      } else {
-        enqueueSnackbar('An error occured!', {
-          variant: 'error',
-        });
-      }
-
-      console.log(error);
+      sendError(error);
     }
   };
 

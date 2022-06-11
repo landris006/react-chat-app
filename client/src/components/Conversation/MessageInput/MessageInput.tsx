@@ -1,10 +1,11 @@
 import { TextField, InputAdornment, IconButton } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import React, { useState } from 'react';
-import { user } from '../../../dummyMessages';
 import { Socket } from 'socket.io-client';
+import { useAppSelector } from '../../../hooks';
 
 const MessageInput = ({ socket }: { socket: Socket }) => {
+  const currentUser = useAppSelector(({ users }) => users.currentUser)!;
   const [newMessageContent, setNewMessageContent] = useState('');
 
   const handleKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -16,13 +17,15 @@ const MessageInput = ({ socket }: { socket: Socket }) => {
   };
 
   const handleSend = () => {
+    console.log(currentUser);
+
     if (!newMessageContent) {
       return;
     }
 
     const newMessage: Message = {
       content: newMessageContent,
-      from: user._id,
+      from: currentUser._id,
       to: 'EVERYONE',
     };
 

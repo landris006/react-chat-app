@@ -1,12 +1,13 @@
 import axios from 'axios';
 
-const url = 'http://localhost:5000/auth';
+const url = 'http://localhost:5000/users';
 
 export const login = async (loginData: {
   username: string;
   password: string;
 }) => {
-  await axios.post(`${url}/login`, loginData);
+  const res = await axios.post<User>(`${url}/login`, loginData);
+  return res.data;
 };
 
 export const signUp = async (signUpData: {
@@ -14,5 +15,6 @@ export const signUp = async (signUpData: {
   password: string;
   confirmPassword: string;
 }) => {
-  await axios.post(`${url}/login`, signUpData);
+  const res = await axios.post<User>(`${url}/sign-up`, signUpData);
+  return res.data;
 };

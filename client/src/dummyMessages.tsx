@@ -1,6 +1,7 @@
 export const user: User = {
   _id: '0',
-  name: 'Simple Jack',
+  username: 'Simple Jack',
+  password: 'asd',
   createdAt: Date(),
 };
 

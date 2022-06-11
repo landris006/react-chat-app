@@ -17,17 +17,8 @@ const Conversation = () => {
 
   const dummyDiv = useRef<HTMLDivElement>(null);
 
-  let initialLoad = true;
   useEffect(() => {
-    if (!initialLoad) {
-      return;
-    }
-    console.log('RAN');
-
-    getMessages((messages) => dispatch(newMessage(messages)));
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    initialLoad = false;
+    getMessages().then((messages) => dispatch(newMessage(messages)));
   }, []);
 
   useEffect(() => {

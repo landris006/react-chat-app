@@ -1,3 +1,25 @@
-.login-button {
+.logged-in-user {
   margin-left: auto;
+  display: flex;
+  align-items: center;
+
+  .username {
+    font-weight: bold;
+  }
+
+  .menu-container {
+    position: relative;
+
+    .user-menu {
+      position: absolute;
+      right: 0;
+      min-width: 10rem;
+      min-height: 5rem;
+      padding: 1rem 0;
+
+      .button-wrapper {
+        padding: 0 1rem;
+      }
+    }
+  }
 }

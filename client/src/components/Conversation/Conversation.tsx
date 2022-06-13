@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Container } from '@mui/system';
 import { Stack, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import Message from './Message/Message';
 import './Conversation.scss';
-import { newMessage } from '../../reducers/messages';
+import { newMessage, fetchMessages } from '../../reducers/messages';
 import { io } from 'socket.io-client';
 import { getMessages } from '../../api/messages';
 import MessageInput from './MessageInput/MessageInput';
@@ -18,12 +18,14 @@ const Conversation = () => {
   const dummyDiv = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    getMessages().then((messages) => dispatch(newMessage(messages)));
-  }, []);
+    getMessages().then((messages) => dispatch(fetchMessages(messages)));
+  }, [dispatch]);
+
+  console.log('asd');
 
   useEffect(() => {
     socket.on('newMessage', (message) => {
-      dispatch(newMessage([message]));
+      dispatch(newMessage(message));
     });
 
     return () => {

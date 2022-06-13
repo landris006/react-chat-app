@@ -1,8 +1,9 @@
 interface Message {
   _id?: string;
   content: string;
-  from: string;
-  to: string;
+  senderUsername: string;
+  senderId: string;
+  receiverId: string;
   createdAt?: string;
 }
 

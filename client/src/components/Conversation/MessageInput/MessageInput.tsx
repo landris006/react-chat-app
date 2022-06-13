@@ -17,16 +17,15 @@ const MessageInput = ({ socket }: { socket: Socket }) => {
   };
 
   const handleSend = () => {
-    console.log(currentUser);
-
     if (!newMessageContent) {
       return;
     }
 
     const newMessage: Message = {
       content: newMessageContent,
-      from: currentUser._id,
-      to: 'EVERYONE',
+      senderId: currentUser._id,
+      senderUsername: currentUser.username,
+      receiverId: 'EVERYONE',
     };
 
     socket.emit('sendMessage', newMessage);

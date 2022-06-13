@@ -1,20 +1,20 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState: Array<Message> = [];
+const initialState: Message[] = [];
 
 export const messagesSlice = createSlice({
   name: 'messages',
   initialState,
   reducers: {
-    newMessage: (state, action: PayloadAction<Array<Message>>) => {
-      console.log(action.payload);
+    newMessage: (state, action: PayloadAction<Message>) => {
+      state.push(action.payload);
+    },
 
-      action.payload.forEach((message) => {
-        state.push(message);
-      });
+    fetchMessages: (state, action: PayloadAction<Message[]>) => {
+      return action.payload;
     },
   },
 });
 
-export const { newMessage } = messagesSlice.actions;
+export const { newMessage, fetchMessages } = messagesSlice.actions;
 export default messagesSlice.reducer;

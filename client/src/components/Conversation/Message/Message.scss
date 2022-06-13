@@ -1,13 +1,17 @@
-.message {
-  display: flex;
-  flex-direction: column;
-  width: min-content;
-}
-
 .messageText {
   font-size: 1.2rem !important;
 }
 
 .own-message {
   align-self: flex-end;
+}
+
+.message {
+  position: relative;
+
+  .username {
+    position: absolute;
+    padding: 0 0.5rem;
+    top: -60%;
+  }
 }

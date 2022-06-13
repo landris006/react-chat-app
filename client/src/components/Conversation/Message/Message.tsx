@@ -1,6 +1,6 @@
-import { Avatar, Chip, Typography } from '@mui/material';
+import { Avatar, Chip, Paper, Typography } from '@mui/material';
 import moment from 'moment';
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppSelector } from '../../../hooks';
 import './Message.scss';
 
@@ -12,9 +12,8 @@ const Message = ({
   senderUsername,
 }: Message) => {
   const currentUser = useAppSelector(({ users }) => users.currentUser);
-
+  const [isShowingName, setIsShowingName] = useState(false);
   const isOwnMessage = currentUser?._id === senderId;
-
   const dateToShow = moment(createdAt).calendar();
 
   return (
@@ -23,14 +22,26 @@ const Message = ({
         {dateToShow}
       </Typography>
       <div
+        className="message"
         style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: `${isOwnMessage ? 'flex-end' : 'flex-start'}`,
         }}
       >
-        {isOwnMessage || <Avatar>{senderUsername?.charAt(0)}</Avatar>}{' '}
-        {/* TODO: user neve */}
+        {isOwnMessage || (
+          <Avatar
+            onMouseOver={() => setIsShowingName(true)}
+            onMouseLeave={() => setIsShowingName(false)}
+          >
+            {senderUsername?.charAt(0)}
+          </Avatar>
+        )}
+        {isShowingName && (
+          <Paper elevation={6} className="username">
+            <Typography>{senderUsername}</Typography>
+          </Paper>
+        )}
         <Chip
           className="messageText"
           size="medium"

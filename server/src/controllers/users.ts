@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { User } from '../models/User';
 import { compare, hash } from 'bcrypt';
+import { TypedRequestBody } from '../types/common';
 
 export const signUp = async (
   req: TypedRequestBody<{

@@ -1,6 +1,7 @@
 import { Message } from '../models/Message';
+import { EventHandler } from '../types/common';
 
-export const messageHandler: eventHandler = (io, socket) => {
+export const messageHandler: EventHandler = (io, socket) => {
   socket.on('sendMessage', async (message: Message) => {
     const newMessage = new Message({ ...message });
 

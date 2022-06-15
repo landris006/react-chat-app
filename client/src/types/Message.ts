@@ -6,10 +6,3 @@ interface Message {
   receiverId: string;
   createdAt?: string;
 }
-
-interface User {
-  _id: string;
-  username: string;
-  password: string;
-  createdAt: string;
-}

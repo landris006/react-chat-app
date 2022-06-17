@@ -3,6 +3,7 @@ import moment from 'moment';
 import React, { useState } from 'react';
 import { useAppSelector } from '../../../hooks';
 import './Message.scss';
+import { Message as MessageType } from '../../../types/Message';
 
 const Message = ({
   _id,
@@ -10,7 +11,7 @@ const Message = ({
   createdAt,
   senderId,
   senderUsername,
-}: Message) => {
+}: MessageType) => {
   const currentUser = useAppSelector(({ users }) => users.currentUser);
   const [isShowingName, setIsShowingName] = useState(false);
   const isOwnMessage = currentUser?._id === senderId;

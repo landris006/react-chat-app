@@ -1,0 +1,13 @@
+.stack {
+  flex-grow: 1;
+
+  .rooms-header {
+    margin-left: 2.5rem;
+    display: flex;
+    align-items: center;
+
+    .add-icon {
+      margin-left: 0.5rem;
+    }
+  }
+}

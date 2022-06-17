@@ -4,16 +4,14 @@ import { Stack, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import Message from './Message/Message';
 import './Conversation.scss';
-import { newMessage, fetchMessages } from '../../reducers/messages';
-import { io } from 'socket.io-client';
-import { getMessages } from '../../api/messages';
+import { newMessage, fetchMessages } from '../../reducers/conversation';
+import { Socket } from 'socket.io-client';
+import { getMessages } from '../../api/conversation';
 import MessageInput from './MessageInput/MessageInput';
 
-const socket = io('http://localhost:5000');
-
-const Conversation = () => {
+const Conversation = ({ socket }: { socket: Socket }) => {
   const dispatch = useAppDispatch();
-  const messages = useAppSelector(({ messages }) => messages);
+  const messages = useAppSelector(({ conversation }) => conversation.messages);
 
   const dummyDiv = useRef<HTMLDivElement>(null);
 
@@ -31,7 +29,7 @@ const Conversation = () => {
     return () => {
       socket.removeAllListeners();
     };
-  }, [dispatch]);
+  }, [dispatch, socket]);
 
   useEffect(() => {
     dummyDiv.current?.scrollIntoView();

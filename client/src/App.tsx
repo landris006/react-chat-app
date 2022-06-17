@@ -5,6 +5,9 @@ import Header from './components/Header/Header';
 import Home from './pages/Home';
 import Auth from './pages/Auth/Auth';
 import { useAppSelector } from './hooks';
+import { io } from 'socket.io-client';
+
+const socket = io('http://localhost:5000');
 
 function App() {
   const isLoggedIn = useAppSelector(({ users }) => users.currentUser) !== null;
@@ -15,7 +18,13 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={isLoggedIn ? <Home /> : <Navigate to="/authentication" />}
+          element={
+            isLoggedIn ? (
+              <Home socket={socket} />
+            ) : (
+              <Navigate to="/authentication" />
+            )
+          }
         />
         <Route path="/authentication" element={<Auth />} />
       </Routes>

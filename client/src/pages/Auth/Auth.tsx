@@ -2,6 +2,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
   Button,
   Card,
+  Container,
   IconButton,
   InputAdornment,
   TextField,
@@ -11,7 +12,6 @@ import React, { useState } from 'react';
 import { login, signUp } from '../../api/users';
 import { useSnackbar } from 'notistack';
 import './Auth.scss';
-import { AxiosError } from 'axios';
 import { useAppDispatch, useErrorMessage } from '../../hooks';
 import { setCurrentUser } from '../../reducers/users';
 import { useNavigate } from 'react-router-dom';
@@ -90,78 +90,80 @@ const Auth = () => {
   };
 
   return (
-    <div className="wrapper auth-container">
-      <Card className="auth-card" raised>
-        <Typography variant="h2">{isSignup ? 'Sign Up' : 'Login'}</Typography>
-        <form>
-          <TextField
-            required
-            margin="normal"
-            label="username"
-            name="username"
-            fullWidth
-            value={formData.username}
-            onChange={(e) => handleInput(e)}
-            error={emptyFields.username}
-          />
-
-          <TextField
-            required
-            margin="normal"
-            label="password"
-            name="password"
-            type={showPassword ? 'text' : 'password'}
-            fullWidth
-            value={formData.password}
-            error={emptyFields.password}
-            onChange={(e) => handleInput(e)}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={() => setShowPassword((current) => !current)}
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-
-          {isSignup ? (
+    <div className="wrapper ">
+      <Container className="auth-container">
+        <Card className="auth-card" raised>
+          <Typography variant="h2">{isSignup ? 'Sign Up' : 'Login'}</Typography>
+          <form>
             <TextField
-              type={'password'}
               required
               margin="normal"
-              label="confirm password"
-              name="confirmPassword"
-              error={emptyFields.confirmPassword}
-              onChange={(e) => handleInput(e)}
+              label="username"
+              name="username"
               fullWidth
+              value={formData.username}
+              onChange={(e) => handleInput(e)}
+              error={emptyFields.username}
             />
-          ) : null}
-          <Button
-            type="submit"
-            fullWidth
-            className="auth-button"
-            variant="contained"
-            onClick={(e) => handleSignUpOrLogin(e)}
-          >
-            {isSignup ? 'sign up' : 'login'}
-          </Button>
-        </form>
-        <Typography variant="subtitle1">
-          {isSignup
-            ? 'Already have an account? Login '
-            : "Don't have an account? Sign up "}
-          <span
-            onClick={() => setIsSignup((current) => !current)}
-            color="primary"
-          >
-            here!
-          </span>
-        </Typography>
-      </Card>
+
+            <TextField
+              required
+              margin="normal"
+              label="password"
+              name="password"
+              type={showPassword ? 'text' : 'password'}
+              fullWidth
+              value={formData.password}
+              error={emptyFields.password}
+              onChange={(e) => handleInput(e)}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowPassword((current) => !current)}
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+
+            {isSignup ? (
+              <TextField
+                type={'password'}
+                required
+                margin="normal"
+                label="confirm password"
+                name="confirmPassword"
+                error={emptyFields.confirmPassword}
+                onChange={(e) => handleInput(e)}
+                fullWidth
+              />
+            ) : null}
+            <Button
+              type="submit"
+              fullWidth
+              className="auth-button"
+              variant="contained"
+              onClick={(e) => handleSignUpOrLogin(e)}
+            >
+              {isSignup ? 'sign up' : 'login'}
+            </Button>
+          </form>
+          <Typography variant="subtitle1">
+            {isSignup
+              ? 'Already have an account? Login '
+              : "Don't have an account? Sign up "}
+            <span
+              onClick={() => setIsSignup((current) => !current)}
+              color="primary"
+            >
+              here!
+            </span>
+          </Typography>
+        </Card>
+      </Container>
     </div>
   );
 };

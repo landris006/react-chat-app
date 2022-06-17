@@ -7,33 +7,41 @@ import bodyParser from 'body-parser';
 import { usersRoutes } from './routes/users';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import { messagesRoutes } from './routes/messages';
-import { User } from './models/User';
+import { conversationRoutes } from './routes/conversation';
 
 dotenv.config();
 const PORT = process.env.PORT ?? 5000;
 const CONNECTION_STRING = process.env.CONNECTION_STRING ?? '';
+const CLIENT_ADDRESS = process.env.CLIENT_ADDRESS ?? 'http://localhost:3000';
+
+const corsOptions = {
+  origin: CLIENT_ADDRESS,
+  methods: ['GET', 'POST'],
+};
+
 const app = express();
 
 app.use(bodyParser.json({ limit: '30mb' }));
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
-app.use(cors());
+app.use(cors(corsOptions));
 
-app.use('/messages', messagesRoutes);
+app.use('/conversation', conversationRoutes);
 app.use('/users', usersRoutes);
 
 const httpServer = createServer(app);
 
 const io = new Server(httpServer, {
-  cors: {
-    origin: 'http://localhost:3000',
-    methods: ['GET', 'POST'],
-  },
+  cors: corsOptions,
 });
 
 io.on('connection', (socket) => {
   console.log(`${socket.id} connected...`);
+
   messageHandler(io, socket);
+
+  socket.on('disconnect', () => {
+    console.log(`${socket.id} disconnected...`);
+  });
 });
 
 mongoose

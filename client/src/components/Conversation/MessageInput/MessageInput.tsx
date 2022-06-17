@@ -3,6 +3,7 @@ import SendIcon from '@mui/icons-material/Send';
 import React, { useState } from 'react';
 import { Socket } from 'socket.io-client';
 import { useAppSelector } from '../../../hooks';
+import { Message, newMessage } from '../../../types/Message';
 
 const MessageInput = ({ socket }: { socket: Socket }) => {
   const currentUser = useAppSelector(({ users }) => users.currentUser)!;
@@ -21,7 +22,7 @@ const MessageInput = ({ socket }: { socket: Socket }) => {
       return;
     }
 
-    const newMessage: Message = {
+    const newMessage: newMessage = {
       content: newMessageContent,
       senderId: currentUser._id,
       senderUsername: currentUser.username,

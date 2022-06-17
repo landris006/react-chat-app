@@ -1,8 +1,5 @@
 import { useSnackbar } from 'notistack';
-import { useEffect } from 'react';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import { getMessages } from './api/messages';
-import { fetchMessages } from './reducers/messages';
 import type { RootState, AppDispatch } from './store';
 
 // Use throughout your app instead of plain `useDispatch` and `useSelector`

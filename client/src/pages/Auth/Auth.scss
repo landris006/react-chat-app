@@ -1,6 +1,8 @@
 .auth-container {
+  display: flex !important;
   align-items: center;
   justify-content: center;
+  flex-grow: 1;
 
   .auth-card {
     padding: 1.5rem;

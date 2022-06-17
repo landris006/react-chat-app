@@ -1,8 +1,11 @@
-interface Message {
-  _id?: string;
+export interface newMessage {
   content: string;
   senderUsername: string;
   senderId: string;
   receiverId: string;
-  createdAt?: string;
+}
+
+export interface Message extends newMessage {
+  _id: string;
+  createdAt: string;
 }

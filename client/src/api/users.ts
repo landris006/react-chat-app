@@ -19,3 +19,8 @@ export const signUp = async (signUpData: {
   const res = await axios.post<User>(`${url}/sign-up`, signUpData);
   return res.data;
 };
+
+export const getAllUsers = async () => {
+  const res = await axios.get<User[]>(`${url}/get-all`);
+  return res.data;
+};

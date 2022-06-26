@@ -11,6 +11,7 @@
     position: relative;
 
     .user-menu {
+      z-index: 1;
       position: absolute;
       right: 0;
       min-width: 10rem;

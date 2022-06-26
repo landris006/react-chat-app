@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Container } from '@mui/system';
 import { Stack, Typography } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector, useErrorMessage } from '../../hooks';
 import Message from './Message/Message';
 import './Conversation.scss';
 import { newMessage, fetchMessages } from '../../reducers/conversation';
@@ -9,17 +9,22 @@ import { Socket } from 'socket.io-client';
 import { getMessages } from '../../api/conversation';
 import MessageInput from './MessageInput/MessageInput';
 
-const Conversation = ({ socket }: { socket: Socket }) => {
+interface Props {
+  socket: Socket;
+}
+
+const Conversation = ({ socket }: Props) => {
   const dispatch = useAppDispatch();
   const messages = useAppSelector(({ conversation }) => conversation.messages);
+  const { sendError } = useErrorMessage();
 
   const dummyDiv = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    getMessages().then((messages) => dispatch(fetchMessages(messages)));
+    getMessages()
+      .then((messages) => dispatch(fetchMessages(messages)))
+      .catch((err) => sendError(err, 'Could not fetch messages'));
   }, [dispatch]);
-
-  console.log('asd');
 
   useEffect(() => {
     socket.on('newMessage', (message) => {

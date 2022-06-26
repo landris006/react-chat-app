@@ -1,7 +1,8 @@
 import express from 'express';
-import { createRoom, getMessages } from '../controllers/conversation';
+import { createRoom, getMessages, getRooms } from '../controllers/conversation';
 
 export const conversationRoutes = express.Router();
 
 conversationRoutes.get('/get-messages', getMessages);
-conversationRoutes.get('/create-room', createRoom);
+conversationRoutes.get('/get-rooms', getRooms);
+conversationRoutes.post('/create-room', createRoom);

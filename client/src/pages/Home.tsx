@@ -1,11 +1,12 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
 import Conversation from '../components/Conversation/Conversation';
 import Rooms from '../components/Rooms/Rooms';
-import { useAppSelector } from '../hooks';
 
-const Home = ({ socket }: { socket: Socket }) => {
+interface Props {
+  socket: Socket;
+}
+
+const Home = ({ socket }: Props) => {
   return (
     <div className="wrapper">
       <Rooms />

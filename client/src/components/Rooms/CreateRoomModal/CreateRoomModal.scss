@@ -1,0 +1,14 @@
+.modal {
+  .selected-users-label {
+    margin-top: 1rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .selected-users-list {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 28rem;
+    max-height: 5rem;
+    overflow-x: auto;
+  }
+}

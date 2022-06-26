@@ -15,7 +15,15 @@ export const createRoom = async (newRoom: {
   name: string;
   members: User[];
 }) => {
-  const response = await axios.post<Room>(`${url}/create-room`);
+  const response = await axios.post<Room>(`${url}/create-room`, newRoom);
+
+  return response.data;
+};
+
+export const getRooms = async (userId: string) => {
+  const response = await axios.get<Room[]>(`${url}/get-rooms`, {
+    params: { userId },
+  });
 
   return response.data;
 };

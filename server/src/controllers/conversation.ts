@@ -10,7 +10,20 @@ export const getMessages = async (req: Request, res: Response) => {
     res.status(200).json(messages);
   } catch (error) {
     console.error(error);
-    res.status(404).json(error);
+    res.status(500).json(error);
+  }
+};
+
+export const getRooms = async (req: Request, res: Response) => {
+  try {
+    const userId = req.query.userId;
+
+    const rooms = await Room.find({ members: { $elemMatch: { _id: userId } } });
+
+    res.status(200).json(rooms);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(error);
   }
 };
 

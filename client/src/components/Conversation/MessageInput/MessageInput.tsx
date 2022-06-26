@@ -3,9 +3,13 @@ import SendIcon from '@mui/icons-material/Send';
 import React, { useState } from 'react';
 import { Socket } from 'socket.io-client';
 import { useAppSelector } from '../../../hooks';
-import { Message, newMessage } from '../../../types/Message';
+import { newMessage } from '../../../types/Message';
 
-const MessageInput = ({ socket }: { socket: Socket }) => {
+interface Props {
+  socket: Socket;
+}
+
+const MessageInput = ({ socket }: Props) => {
   const currentUser = useAppSelector(({ users }) => users.currentUser)!;
   const [newMessageContent, setNewMessageContent] = useState('');
 

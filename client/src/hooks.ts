@@ -9,7 +9,7 @@ export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 export const useErrorMessage = () => {
   const { enqueueSnackbar } = useSnackbar();
   return {
-    sendError: (error: any) => {
+    sendError: (error: any, additionalMessage?: string) => {
       let message =
         error.response?.data?.error?.message ??
         error.message ??
@@ -19,8 +19,13 @@ export const useErrorMessage = () => {
         message = error;
       }
 
+      if (additionalMessage) {
+        message = `${additionalMessage}\n${message}`;
+      }
+
       enqueueSnackbar(message, {
         variant: 'error',
+        style: { whiteSpace: 'pre-line' },
       });
       console.error(error);
     },

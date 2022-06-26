@@ -4,12 +4,17 @@
   margin: 0 0.5rem;
   display: flex;
   align-items: center;
+  border: none;
 
   .room-title {
     margin-left: 2.5rem;
   }
 
   &:hover {
+    background-color: rgb(186, 186, 186);
+  }
+
+  &.selected {
     background-color: rgb(186, 186, 186);
   }
 }

@@ -1,38 +1,33 @@
-import { Paper, Typography } from '@mui/material';
+import { IconButton, Paper, Typography } from '@mui/material';
+import CancelIcon from '@mui/icons-material/Cancel';
+import { Link, useParams } from 'react-router-dom';
 import { Message } from '../../../types/Message';
 import { User } from '../../../types/User';
 import './Room.scss';
+import { useAppSelector } from '../../../hooks';
+import { Room as RoomType } from '../../../types/Room';
+import { deleteRoom } from '../../../api/conversation';
 
-interface Props {
-  _id: string;
-  name?: string;
-  members?: User[];
-  lastMessage?: Message;
-  selectedRoomId: string;
-  setSelectedRoomId: (id: string) => void;
-}
+const Room = ({ _id, name, members, ownerId, lastMessage }: RoomType) => {
+  const currentRoomId = useParams().roomId;
+  const currentUser = useAppSelector(({ users }) => users.currentUser)!;
 
-const Room = ({
-  _id,
-  name,
-  members,
-  lastMessage,
-  selectedRoomId,
-  setSelectedRoomId,
-}: Props) => {
-  const isSelected = _id === selectedRoomId;
+  const isOwner = currentUser._id === ownerId;
+  const isSelected = _id === currentRoomId;
 
   return (
-    <Paper
-      className={`room ${isSelected && 'selected'}`}
-      elevation={0}
-      component="button"
-      onClick={() => setSelectedRoomId(_id)}
-    >
-      <Typography className="room-title" variant="h6">
-        {name}
-      </Typography>
-    </Paper>
+    <Link to={`/${_id}`}>
+      <Paper className={`room ${isSelected && 'selected'}`} elevation={0}>
+        <Typography className="room-title" variant="h6">
+          {name}
+        </Typography>
+        {isOwner && (
+          <IconButton color="error" onClick={() => deleteRoom(_id)}>
+            <CancelIcon />
+          </IconButton>
+        )}
+      </Paper>
+    </Link>
   );
 };
 

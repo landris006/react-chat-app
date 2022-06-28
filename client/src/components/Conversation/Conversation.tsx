@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Container } from '@mui/system';
 import { Stack, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector, useErrorMessage } from '../../hooks';
@@ -8,33 +8,35 @@ import { newMessage, fetchMessages } from '../../reducers/conversation';
 import { Socket } from 'socket.io-client';
 import { getMessages } from '../../api/conversation';
 import MessageInput from './MessageInput/MessageInput';
+import { useParams } from 'react-router-dom';
+import { Message as MessageType } from '../../types/Message';
 
 interface Props {
   socket: Socket;
 }
 
 const Conversation = ({ socket }: Props) => {
-  const dispatch = useAppDispatch();
-  const messages = useAppSelector(({ conversation }) => conversation.messages);
+  const roomId = useParams().roomId!;
+  const [messages, setMessages] = useState<MessageType[]>([]);
   const { sendError } = useErrorMessage();
 
   const dummyDiv = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    getMessages()
-      .then((messages) => dispatch(fetchMessages(messages)))
+    getMessages(roomId)
+      .then((messages) => setMessages(messages))
       .catch((err) => sendError(err, 'Could not fetch messages'));
-  }, [dispatch]);
+  }, [roomId]);
 
   useEffect(() => {
     socket.on('newMessage', (message) => {
-      dispatch(newMessage(message));
+      setMessages((messages) => [...messages, message]);
     });
 
     return () => {
       socket.removeAllListeners();
     };
-  }, [dispatch, socket]);
+  }, [socket]);
 
   useEffect(() => {
     dummyDiv.current?.scrollIntoView();

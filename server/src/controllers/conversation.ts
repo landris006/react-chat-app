@@ -5,7 +5,7 @@ import { TypedRequestBody } from '../types/common';
 
 export const getMessages = async (req: Request, res: Response) => {
   try {
-    const messages = await Message.find();
+    const messages = await Message.find({ roomId: req.query.roomId });
 
     res.status(200).json(messages);
   } catch (error) {
@@ -28,12 +28,33 @@ export const getRooms = async (req: Request, res: Response) => {
 };
 
 export const createRoom = async (
-  req: TypedRequestBody<{ name: string; members: User[] }>,
+  req: TypedRequestBody<{ name: string; members: User[]; ownerId: string }>,
   res: Response
 ) => {
   try {
-    const { name, members } = req.body;
-    const newRoom = await Room.create({ name, members });
+    const { name, members, ownerId } = req.body;
+
+    if (!name) {
+      res.status(403).json({ error: { message: 'Name is required...' } });
+      return;
+    }
+
+    if (name === 'everyone') {
+      res
+        .status(403)
+        .json({ error: { message: "Name 'everyone' is reserved..." } });
+      return;
+    }
+
+    const nameAlreadyExists = await Room.findOne({ name });
+    if (nameAlreadyExists) {
+      res.status(403).json({
+        error: { message: `Name '${name}' is taken...` },
+      });
+      return;
+    }
+
+    const newRoom = await Room.create({ name, members, ownerId });
 
     res.status(200).json(newRoom);
   } catch (error) {

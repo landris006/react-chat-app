@@ -16,8 +16,9 @@ function App() {
     <BrowserRouter>
       <Header />
       <Routes>
+        <Route path="/" element={<Navigate to="/everyone" />} />
         <Route
-          path="/"
+          path="/:roomId"
           element={
             isLoggedIn ? (
               <Home socket={socket} />
@@ -27,6 +28,7 @@ function App() {
           }
         />
         <Route path="/authentication" element={<Auth />} />
+        {/* <Route path="*" element={<Navigate to="/everyone" />} /> TODO: 404 path */}
       </Routes>
     </BrowserRouter>
   );

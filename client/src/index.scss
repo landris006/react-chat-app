@@ -6,9 +6,11 @@
   --color-primary: #1976d2;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+a,
+a:active,
+a:hover {
+  color: inherit !important;
+  text-decoration: none !important;
 }
 
 body {

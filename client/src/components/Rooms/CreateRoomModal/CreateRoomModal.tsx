@@ -12,7 +12,7 @@ import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { createRoom } from '../../../api/conversation';
 import { getAllUsers } from '../../../api/users';
-import { useAppSelector } from '../../../hooks';
+import { useAppSelector, useErrorMessage } from '../../../hooks';
 import { Room } from '../../../types/Room';
 import { User } from '../../../types/User';
 import './CreateRoomModal.scss';
@@ -30,6 +30,7 @@ const CreateRoomModal = ({ isModalOpen, closeModal, addRoom }: Props) => {
   const [avaliableUsers, setAvaliableUsers] = useState<User[]>([]);
   const [roomName, setRoomName] = useState('');
   const { enqueueSnackbar } = useSnackbar();
+  const { sendError } = useErrorMessage();
 
   const updateUsers = async () => {
     const users = await getAllUsers();
@@ -45,14 +46,21 @@ const CreateRoomModal = ({ isModalOpen, closeModal, addRoom }: Props) => {
   };
 
   const handleSubmit = async () => {
-    const room = await createRoom({
-      name: roomName,
-      members: [...selectedUsers, currentUser],
-    });
+    try {
+      const room = await createRoom({
+        name: roomName,
+        members: [...selectedUsers, currentUser],
+        ownerId: currentUser._id,
+      });
 
-    addRoom(room);
+      addRoom(room);
 
-    enqueueSnackbar('Room created!', { variant: 'success' });
+      enqueueSnackbar('Room created!', { variant: 'success' });
+
+      closeModal();
+    } catch (error) {
+      sendError(error);
+    }
   };
 
   useEffect(() => {

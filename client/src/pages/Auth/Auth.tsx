@@ -65,7 +65,7 @@ const Auth = () => {
       try {
         const user = await login({ username, password });
         dispatch(setCurrentUser(user));
-        navigate('/');
+        navigate('/everyone');
         enqueueSnackbar('Successful login!', { variant: 'success' });
       } catch (error) {
         sendError(error);
@@ -82,7 +82,7 @@ const Auth = () => {
     try {
       const user = await signUp(formData);
       dispatch(setCurrentUser(user));
-      navigate('/');
+      navigate('/everyone');
       enqueueSnackbar('Successful signup!', { variant: 'success' });
     } catch (error) {
       sendError(error);

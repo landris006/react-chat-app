@@ -1,8 +1,8 @@
 export interface newMessage {
   content: string;
   senderUsername: string;
+  roomId: string;
   senderId: string;
-  receiverId: string;
 }
 
 export interface Message extends newMessage {

@@ -3,6 +3,6 @@ interface Message {
   content: string;
   senderId: string;
   senderUsername: string;
-  receiverId: string;
+  roomId: string;
   createdAt: string;
 }

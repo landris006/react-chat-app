@@ -6,12 +6,11 @@ import Room from './Room/Room';
 import './Rooms.scss';
 import CreateRoomModal from './CreateRoomModal/CreateRoomModal';
 import { Room as RoomType } from '../../types/Room';
-import { getRooms } from '../../api/conversation';
+import { deleteRoom, getRooms } from '../../api/conversation';
 import { useAppSelector, useErrorMessage } from '../../hooks';
 
 const Rooms = () => {
   const currentUser = useAppSelector(({ users }) => users.currentUser)!;
-  const [selectedRoomId, setSelectedRoomId] = useState('EVERYONE');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [rooms, setRooms] = useState<RoomType[]>([]);
 
@@ -21,7 +20,11 @@ const Rooms = () => {
     setIsModalOpen(false);
   };
   const addRoom = (newRoom: RoomType) => {
-    setRooms([...rooms, newRoom]);
+    setRooms((rooms) => [...rooms, newRoom]);
+  };
+  /* TODO: remove room functionality */
+  const removeRoom = async (roomId: string) => {
+    await deleteRoom(roomId);
   };
 
   useEffect(() => {
@@ -53,20 +56,17 @@ const Rooms = () => {
       />
 
       <Divider />
-      <Room
-        name={'EVERYONE'}
-        _id={'EVERYONE'}
-        selectedRoomId={selectedRoomId}
-        setSelectedRoomId={setSelectedRoomId}
-      />
+      <ul className="roomList">
+        <li>
+          <Room name={'everyone'} _id={'everyone'} ownerId="" members={[]} />
+        </li>
 
-      {rooms.map((room) => (
-        <Room
-          {...room}
-          selectedRoomId={selectedRoomId}
-          setSelectedRoomId={setSelectedRoomId}
-        />
-      ))}
+        {rooms.map((room) => (
+          <li key={room._id}>
+            <Room {...room} />
+          </li>
+        ))}
+      </ul>
     </Stack>
   );
 };

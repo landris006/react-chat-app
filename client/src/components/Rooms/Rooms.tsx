@@ -5,32 +5,26 @@ import { useEffect, useState } from 'react';
 import Room from './Room/Room';
 import './Rooms.scss';
 import CreateRoomModal from './CreateRoomModal/CreateRoomModal';
-import { Room as RoomType } from '../../types/Room';
-import { deleteRoom, getRooms } from '../../api/conversation';
-import { useAppSelector, useErrorMessage } from '../../hooks';
+import { getRooms } from '../../api/conversation';
+import { useAppDispatch, useAppSelector, useErrorMessage } from '../../hooks';
+import { setRooms } from '../../reducers/conversation';
 
 const Rooms = () => {
-  const currentUser = useAppSelector(({ users }) => users.currentUser)!;
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [rooms, setRooms] = useState<RoomType[]>([]);
+  const currentUser = useAppSelector(({ users }) => users.currentUser)!;
+  const dispatch = useAppDispatch();
+  const rooms = useAppSelector(({ conversation }) => conversation.rooms);
 
   const { sendError } = useErrorMessage();
 
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  const addRoom = (newRoom: RoomType) => {
-    setRooms((rooms) => [...rooms, newRoom]);
-  };
-  /* TODO: remove room functionality */
-  const removeRoom = async (roomId: string) => {
-    await deleteRoom(roomId);
-  };
 
   useEffect(() => {
     getRooms(currentUser._id)
-      .then((rooms) => setRooms(rooms))
-      .catch((err) => sendError(err, 'Could not fetch rooms'));
+      .then((rooms) => dispatch(setRooms(rooms)))
+      .catch((err) => sendError(err, 'Could not fetch rooms...'));
   }, [currentUser._id]);
 
   return (
@@ -49,11 +43,7 @@ const Rooms = () => {
         </IconButton>
       </header>
 
-      <CreateRoomModal
-        isModalOpen={isModalOpen}
-        closeModal={closeModal}
-        addRoom={addRoom}
-      />
+      <CreateRoomModal isModalOpen={isModalOpen} closeModal={closeModal} />
 
       <Divider />
       <ul className="roomList">

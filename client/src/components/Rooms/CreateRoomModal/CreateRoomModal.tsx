@@ -12,18 +12,17 @@ import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { createRoom } from '../../../api/conversation';
 import { getAllUsers } from '../../../api/users';
-import { useAppSelector, useErrorMessage } from '../../../hooks';
-import { Room } from '../../../types/Room';
+import { useAppDispatch, useAppSelector, useErrorMessage } from '../../../hooks';
+import { addRoom } from '../../../reducers/conversation';
 import { User } from '../../../types/User';
 import './CreateRoomModal.scss';
 
 interface Props {
   isModalOpen: boolean;
   closeModal: () => void;
-  addRoom: (newRoom: Room) => void;
 }
 
-const CreateRoomModal = ({ isModalOpen, closeModal, addRoom }: Props) => {
+const CreateRoomModal = ({ isModalOpen, closeModal }: Props) => {
   const currentUser = useAppSelector(({ users }) => users.currentUser)!;
   const [allUsers, setAllUsers] = useState<User[]>([]);
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
@@ -31,6 +30,7 @@ const CreateRoomModal = ({ isModalOpen, closeModal, addRoom }: Props) => {
   const [roomName, setRoomName] = useState('');
   const { enqueueSnackbar } = useSnackbar();
   const { sendError } = useErrorMessage();
+  const dispatch = useAppDispatch();
 
   const updateUsers = async () => {
     const users = await getAllUsers();
@@ -53,7 +53,7 @@ const CreateRoomModal = ({ isModalOpen, closeModal, addRoom }: Props) => {
         ownerId: currentUser._id,
       });
 
-      addRoom(room);
+      dispatch(addRoom(room));
 
       enqueueSnackbar('Room created!', { variant: 'success' });
 
@@ -92,7 +92,7 @@ const CreateRoomModal = ({ isModalOpen, closeModal, addRoom }: Props) => {
           {selectedUsers.map((selectedUser) => (
             <Chip
               key={selectedUser._id}
-              className="messageText"
+              className="selected-user"
               size="medium"
               label={selectedUser.username}
               onDelete={() =>

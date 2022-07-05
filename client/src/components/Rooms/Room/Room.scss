@@ -11,6 +11,10 @@
     margin-left: 2.5rem;
   }
 
+  .room-delete-button {
+    z-index: 1;
+  }
+
   &:hover {
     background-color: rgb(186, 186, 186);
   }

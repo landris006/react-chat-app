@@ -16,7 +16,7 @@ const CLIENT_ADDRESS = process.env.CLIENT_ADDRESS ?? 'http://localhost:3000';
 
 const corsOptions = {
   origin: CLIENT_ADDRESS,
-  methods: ['GET', 'POST'],
+  methods: ['GET', 'POST', 'DELETE'],
 };
 
 const app = express();

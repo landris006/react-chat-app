@@ -62,3 +62,17 @@ export const createRoom = async (
     res.status(500).json(error);
   }
 };
+
+export const deleteRoom = async (req: Request, res: Response) => {
+  /* TODO: authorization */
+  try {
+    const roomId = req.query.roomId;
+
+    const deletedRoom = await Room.findByIdAndDelete(roomId);
+
+    res.status(200).json(deletedRoom);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(error);
+  }
+};

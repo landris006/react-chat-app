@@ -3,5 +3,4 @@ interface Room {
   name: string;
   members: User[];
   ownerId: string;
-  lastMessage?: Message;
 }

@@ -12,7 +12,7 @@ import { deleteRoom } from '../../../api/conversation';
 import { removeRoom } from '../../../reducers/conversation';
 import { useSnackbar } from 'notistack';
 
-const Room = ({ _id, name, members, ownerId, lastMessage }: RoomType) => {
+const Room = ({ _id, name, members, ownerId }: RoomType) => {
   const dispatch = useAppDispatch();
   const currentRoomId = useParams().roomId;
   const currentUser = useAppSelector(({ users }) => users.currentUser)!;

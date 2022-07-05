@@ -2,12 +2,13 @@ import { Server } from 'socket.io';
 import express from 'express';
 import { createServer } from 'http';
 import cors from 'cors';
-import { messageHandler } from './handlers/messageHandler';
+import { conversationHandler } from './handlers/conversationHandler';
 import bodyParser from 'body-parser';
 import { usersRoutes } from './routes/users';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import { conversationRoutes } from './routes/conversation';
+import { init } from './handlers/init';
 
 dotenv.config();
 const PORT = process.env.PORT ?? 5000;
@@ -37,7 +38,8 @@ const io = new Server(httpServer, {
 io.on('connection', (socket) => {
   console.log(`${socket.id} connected...`);
 
-  messageHandler(io, socket);
+  init(io, socket);
+  conversationHandler(io, socket);
 
   socket.on('disconnect', () => {
     console.log(`${socket.id} disconnected...`);

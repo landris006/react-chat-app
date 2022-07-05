@@ -29,14 +29,18 @@ const Conversation = ({ socket }: Props) => {
   }, [roomId]);
 
   useEffect(() => {
-    socket.on('newMessage', (message) => {
+    socket.on('newMessage', (message: MessageType) => {
+      if (message.roomId !== roomId) {
+        return;
+      }
+
       setMessages((messages) => [...messages, message]);
     });
 
     return () => {
-      socket.removeAllListeners();
+      socket.removeListener('newMessage');
     };
-  }, [socket]);
+  }, [socket, roomId]);
 
   useEffect(() => {
     dummyDiv.current?.scrollIntoView();

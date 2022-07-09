@@ -3,6 +3,7 @@ import { Message } from '../models/Message';
 import { Room } from '../models/Room';
 import { User } from '../models/User';
 import { TypedRequestBody } from '../types/common';
+import { User as UserType } from '../types/User';
 
 export const getMessages = async (req: Request, res: Response) => {
   try {
@@ -68,6 +69,8 @@ export const deleteRoom = async (req: Request, res: Response) => {
   /* TODO: authorization */
   try {
     const roomId = req.query.roomId;
+    const user = req.body.user;
+    const roomToDelete = await Room.findById(roomId);
 
     const deletedRoom = await Room.findByIdAndDelete(roomId);
 
@@ -82,7 +85,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
   try {
     const users = await User.find();
 
-    const cleanedUsers: User[] = users.map((user) => {
+    const cleanedUsers: UserType[] = users.map((user) => {
       const jsObjectUser = user.toObject();
       delete jsObjectUser.password;
       return jsObjectUser;

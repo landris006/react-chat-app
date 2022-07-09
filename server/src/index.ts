@@ -10,6 +10,7 @@ import { conversationRoutes } from './routes/conversation';
 import { init } from './handlers/init';
 import { PORT, CONNECTION_STRING, CLIENT_ADDRESS } from './env';
 import { verifyToken } from './middleware/auth';
+import { verifySocketToken } from './middleware/socketAuth';
 
 const corsOptions = {
   origin: CLIENT_ADDRESS,
@@ -30,6 +31,8 @@ const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: corsOptions,
 });
+
+io.use(verifySocketToken);
 
 io.on('connection', (socket) => {
   console.log(`${socket.id} connected...`);

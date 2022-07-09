@@ -27,7 +27,6 @@ const Room = ({ _id, name, members, ownerId }: RoomType) => {
   const handleRemove = async (roomId: string) => {
     try {
       const removedRoom = await deleteRoom(roomId);
-      console.log(removedRoom);
 
       dispatch(removeRoom(removedRoom._id));
       navigate('/everyone');

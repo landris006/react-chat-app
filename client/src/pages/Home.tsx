@@ -1,15 +1,16 @@
 import { useEffect } from 'react';
-import { Socket } from 'socket.io-client';
+import { io } from 'socket.io-client';
 import Conversation from '../components/Conversation/Conversation';
 import Rooms from '../components/Rooms/Rooms';
 import { useAppSelector } from '../hooks';
 
-interface Props {
-  socket: Socket;
-}
-
-const Home = ({ socket }: Props) => {
+const Home = () => {
   const currentUserId = useAppSelector(({ users }) => users?.currentUser?._id);
+  const token = localStorage.getItem('token');
+
+  const socket = io('http://localhost:5000', {
+    auth: { token: `Bearer ${token}` },
+  });
 
   useEffect(() => {
     socket.emit('joinRooms', currentUserId);

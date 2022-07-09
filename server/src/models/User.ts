@@ -1,4 +1,5 @@
 import { model, Model, Schema } from 'mongoose';
+import { User as UserType } from '../types/User';
 
 export const userSchema = new Schema({
   username: { type: String, required: true },
@@ -6,4 +7,4 @@ export const userSchema = new Schema({
   createdAt: { type: String, default: Date() },
 });
 
-export const User = model<User>('User', userSchema);
+export const User = model<UserType>('User', userSchema);

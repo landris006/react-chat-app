@@ -1,10 +1,6 @@
 import { Socket } from 'socket.io-client';
 
-interface Props {
-  socket: Socket;
-}
-
-const Profile = ({ socket }: Props) => {
+const Profile = () => {
   return <div>Profile</div>;
 };
 

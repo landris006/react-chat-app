@@ -94,7 +94,6 @@ const Auth = () => {
       .then((user) => {
         dispatch(setCurrentUser(user));
         navigate('/everyone');
-        enqueueSnackbar('Successful login!', { variant: 'success' });
       })
       .catch((error) => console.warn(error));
   }, []);

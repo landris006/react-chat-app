@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from '../env';
+import { User } from '../types/User';
 
 export const verifyToken = (
   req: Request,
@@ -21,7 +22,7 @@ export const verifyToken = (
       res.status(403).json(err);
     }
 
-    req.body.user = user;
+    req.body.user = user as User;
     next();
   });
 };

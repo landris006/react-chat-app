@@ -8,8 +8,6 @@ import { useAppSelector } from './hooks';
 import { io } from 'socket.io-client';
 import Profile from './pages/Profile';
 
-const socket = io('http://localhost:5000');
-
 function App() {
   const isLoggedIn = useAppSelector(({ users }) => users.currentUser) !== null;
 
@@ -20,23 +18,11 @@ function App() {
         <Route path="/" element={<Navigate to="/everyone" />} />
         <Route
           path="/:roomId"
-          element={
-            isLoggedIn ? (
-              <Home socket={socket} />
-            ) : (
-              <Navigate to="/authentication" />
-            )
-          }
+          element={isLoggedIn ? <Home /> : <Navigate to="/authentication" />}
         />
         <Route
           path="/profile"
-          element={
-            isLoggedIn ? (
-              <Profile socket={socket} />
-            ) : (
-              <Navigate to="/authentication" />
-            )
-          }
+          element={isLoggedIn ? <Profile /> : <Navigate to="/authentication" />}
         />
         <Route path="/authentication" element={<Auth />} />
         {/* <Route path="*" element={<Navigate to="/everyone" />} /> TODO: 404 path */}

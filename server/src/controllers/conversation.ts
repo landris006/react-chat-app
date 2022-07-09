@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { Message } from '../models/Message';
 import { Room } from '../models/Room';
+import { User } from '../models/User';
 import { TypedRequestBody } from '../types/common';
 
 export const getMessages = async (req: Request, res: Response) => {
@@ -18,7 +19,7 @@ export const getRooms = async (req: Request, res: Response) => {
   try {
     const userId = req.query.userId;
 
-    const rooms = await Room.find({ members: { $elemMatch: { _id: userId } } });
+    const rooms = await Room.find({ members: userId });
 
     res.status(200).json(rooms);
   } catch (error) {
@@ -28,7 +29,7 @@ export const getRooms = async (req: Request, res: Response) => {
 };
 
 export const createRoom = async (
-  req: TypedRequestBody<{ name: string; members: User[]; ownerId: string }>,
+  req: TypedRequestBody<{ name: string; members: string[]; ownerId: string }>,
   res: Response
 ) => {
   try {
@@ -74,5 +75,22 @@ export const deleteRoom = async (req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
     res.status(500).json(error);
+  }
+};
+
+export const getAllUsers = async (req: Request, res: Response) => {
+  try {
+    const users = await User.find();
+
+    const cleanedUsers: User[] = users.map((user) => {
+      const jsObjectUser = user.toObject();
+      delete jsObjectUser.password;
+      return jsObjectUser;
+    });
+
+    res.status(200).json(cleanedUsers);
+  } catch (error) {
+    res.status(500).json(error);
+    console.error(error);
   }
 };

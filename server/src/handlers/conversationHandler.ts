@@ -10,8 +10,7 @@ export const conversationHandler: EventHandler = (io, socket) => {
       if (message.roomId !== 'everyone') {
         const room = await Room.find({ _id: newMessage.roomId });
         if (!room) {
-          console.log({ newMessage, room });
-
+          /* TODO: error message */
           return;
         }
       }

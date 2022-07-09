@@ -14,6 +14,7 @@ import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logout } from '../../reducers/users';
 import './Header.scss';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   const currentUser = useAppSelector(({ users }) => users.currentUser);
@@ -41,14 +42,19 @@ const Header = () => {
                 {open && (
                   <Paper elevation={6} className="user-menu">
                     <Stack spacing={1}>
-                      <MenuItem>Profile</MenuItem>
+                      <Link to="/profile">
+                        <MenuItem>Profile</MenuItem>
+                      </Link>
                       <MenuItem>Settings</MenuItem>
                       <div className="button-wrapper">
                         <Button
                           variant="contained"
                           color="error"
                           fullWidth
-                          onClick={() => dispatch(logout())}
+                          onClick={() => {
+                            dispatch(logout());
+                            localStorage.removeItem('token');
+                          }}
                         >
                           logout
                         </Button>

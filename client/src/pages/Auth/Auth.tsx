@@ -8,8 +8,8 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
-import { login, signUp } from '../../api/users';
+import React, { useEffect, useState } from 'react';
+import { login, loginWithToken, signUp } from '../../api/users';
 import { useSnackbar } from 'notistack';
 import './Auth.scss';
 import { useAppDispatch, useErrorMessage } from '../../hooks';
@@ -88,6 +88,16 @@ const Auth = () => {
       sendError(error);
     }
   };
+
+  useEffect(() => {
+    loginWithToken()
+      .then((user) => {
+        dispatch(setCurrentUser(user));
+        navigate('/everyone');
+        enqueueSnackbar('Successful login!', { variant: 'success' });
+      })
+      .catch((error) => console.warn(error));
+  }, []);
 
   return (
     <div className="wrapper ">

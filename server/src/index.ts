@@ -5,15 +5,11 @@ import cors from 'cors';
 import { conversationHandler } from './handlers/conversationHandler';
 import bodyParser from 'body-parser';
 import { usersRoutes } from './routes/users';
-import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import { conversationRoutes } from './routes/conversation';
 import { init } from './handlers/init';
-
-dotenv.config();
-const PORT = process.env.PORT ?? 5000;
-const CONNECTION_STRING = process.env.CONNECTION_STRING ?? '';
-const CLIENT_ADDRESS = process.env.CLIENT_ADDRESS ?? 'http://localhost:3000';
+import { PORT, CONNECTION_STRING, CLIENT_ADDRESS } from './env';
+import { verifyToken } from './middleware/auth';
 
 const corsOptions = {
   origin: CLIENT_ADDRESS,
@@ -26,7 +22,7 @@ app.use(bodyParser.json({ limit: '30mb' }));
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 app.use(cors(corsOptions));
 
-app.use('/conversation', conversationRoutes);
+app.use('/conversation', verifyToken, conversationRoutes);
 app.use('/users', usersRoutes);
 
 const httpServer = createServer(app);

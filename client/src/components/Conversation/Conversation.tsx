@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Container } from '@mui/system';
 import { Stack, Typography } from '@mui/material';
-import { useAppDispatch, useAppSelector, useErrorMessage } from '../../hooks';
+import { useErrorMessage } from '../../hooks';
 import Message from './Message/Message';
 import './Conversation.scss';
-import { newMessage, fetchMessages } from '../../reducers/conversation';
 import { Socket } from 'socket.io-client';
 import { getMessages } from '../../api/conversation';
 import MessageInput from './MessageInput/MessageInput';

@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Auth from './pages/Auth/Auth';
 import { useAppSelector } from './hooks';
 import { io } from 'socket.io-client';
+import Profile from './pages/Profile';
 
 const socket = io('http://localhost:5000');
 
@@ -22,6 +23,16 @@ function App() {
           element={
             isLoggedIn ? (
               <Home socket={socket} />
+            ) : (
+              <Navigate to="/authentication" />
+            )
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            isLoggedIn ? (
+              <Profile socket={socket} />
             ) : (
               <Navigate to="/authentication" />
             )

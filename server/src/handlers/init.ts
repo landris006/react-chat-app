@@ -6,14 +6,12 @@ export const init: EventHandler = (io, socket) => {
   socket.on('joinRooms', async (userId: string) => {
     try {
       const rooms = await Room.find({
-        members: { $elemMatch: { _id: userId } },
+        members: userId,
       });
-      console.log(rooms);
 
       rooms.forEach((room) => {
         socket.join(room._id.toString());
       });
-      console.log(socket.rooms);
     } catch (error) {
       console.error(error);
     }

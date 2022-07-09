@@ -11,8 +11,12 @@ import {
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { createRoom } from '../../../api/conversation';
-import { getAllUsers } from '../../../api/users';
-import { useAppDispatch, useAppSelector, useErrorMessage } from '../../../hooks';
+import { getAllUsers } from '../../../api/conversation';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useErrorMessage,
+} from '../../../hooks';
 import { addRoom } from '../../../reducers/conversation';
 import { User } from '../../../types/User';
 import './CreateRoomModal.scss';
@@ -49,7 +53,7 @@ const CreateRoomModal = ({ isModalOpen, closeModal }: Props) => {
     try {
       const room = await createRoom({
         name: roomName,
-        members: [...selectedUsers, currentUser],
+        members: [...selectedUsers, currentUser].map((user) => user._id),
         ownerId: currentUser._id,
       });
 

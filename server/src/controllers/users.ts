@@ -2,6 +2,11 @@ import { Request, Response } from 'express';
 import { User } from '../models/User';
 import { compare, hash } from 'bcrypt';
 import { TypedRequestBody } from '../types/common';
+import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
+import { JWT_SECRET } from '../env';
+
+dotenv.config();
 
 export const signUp = async (
   req: TypedRequestBody<{
@@ -35,7 +40,12 @@ export const signUp = async (
 
     const newUser = await User.create({ username, password: hashedPassword });
 
-    res.status(201).json(newUser);
+    const token = jwt.sign(
+      newUser.toObject(),
+      process.env.JWT_SECRET || 'secret'
+    );
+
+    res.status(201).json({ newUser, token });
   } catch (error) {
     res.status(500).json(error);
     console.error(error);
@@ -66,28 +76,40 @@ export const login = async (
   }
 
   try {
-    const match = await compare(password, user.password);
+    const match = await compare(password, user.password!);
 
     if (!match) {
       res.status(403).json({ error: { message: 'Wrong password...' } });
       return;
     }
 
-    res.status(200).json(user);
+    const token = jwt.sign(user.toObject(), process.env.JWT_SECRET || 'secret');
+
+    res.status(200).json({ user, token });
   } catch (error) {
     res.status(500).json(error);
     console.error(error);
   }
 };
 
-export const getAllUsers = async (req: Request, res: Response) => {
-  try {
-    const users = await User.find();
-    console.log(users);
+export const loginWithToken = async (
+  req: TypedRequestBody<{
+    token: string;
+  }>,
+  res: Response
+) => {
+  const token = req.body.token?.split(' ')[1];
 
-    res.status(200).json(users);
-  } catch (error) {
-    res.status(500).json(error);
-    console.error(error);
+  if (!token) {
+    res.status(403).json({ error: { message: 'No token provided...' } });
+    return;
   }
+
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) {
+      res.status(403).json(err);
+    }
+
+    res.status(200).json(user);
+  });
 };

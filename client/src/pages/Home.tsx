@@ -2,19 +2,25 @@ import { useEffect } from 'react';
 import { io } from 'socket.io-client';
 import Conversation from '../components/Conversation/Conversation';
 import Rooms from '../components/Rooms/Rooms';
-import { useAppSelector } from '../hooks';
+import { useAppSelector, useErrorMessage } from '../hooks';
 
 const Home = () => {
-  const currentUserId = useAppSelector(({ users }) => users?.currentUser?._id);
   const token = localStorage.getItem('token');
+  const { sendError } = useErrorMessage();
 
   const socket = io('http://localhost:5000', {
     auth: { token: `Bearer ${token}` },
   });
 
   useEffect(() => {
-    socket.emit('joinRooms', currentUserId);
-  }, [currentUserId, socket]);
+    socket.on('error', (error) => {
+      sendError(error);
+    });
+
+    return () => {
+      socket.removeListener('error');
+    };
+  }, [socket, sendError]);
 
   return (
     <div className="wrapper">

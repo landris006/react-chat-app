@@ -2,8 +2,6 @@ import { TextField, InputAdornment, IconButton } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import React, { useState } from 'react';
 import { Socket } from 'socket.io-client';
-import { useAppSelector } from '../../../hooks';
-import { newMessage } from '../../../types/Message';
 import { useParams } from 'react-router-dom';
 
 interface Props {
@@ -12,7 +10,6 @@ interface Props {
 
 const MessageInput = ({ socket }: Props) => {
   const roomId = useParams().roomId!;
-  const currentUser = useAppSelector(({ users }) => users.currentUser)!;
   const [newMessageContent, setNewMessageContent] = useState('');
 
   const handleKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -28,10 +25,8 @@ const MessageInput = ({ socket }: Props) => {
       return;
     }
 
-    const newMessage: newMessage = {
+    const newMessage = {
       content: newMessageContent,
-      senderId: currentUser._id,
-      senderUsername: currentUser.username,
       roomId,
     };
 

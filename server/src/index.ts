@@ -7,10 +7,9 @@ import bodyParser from 'body-parser';
 import { usersRoutes } from './routes/users';
 import mongoose from 'mongoose';
 import { conversationRoutes } from './routes/conversation';
-import { init } from './handlers/init';
 import { PORT, CONNECTION_STRING, CLIENT_ADDRESS } from './env';
 import { verifyToken } from './middleware/auth';
-import { verifySocketToken } from './middleware/socketAuth';
+import { socketInit } from './middleware/socketInit';
 
 const corsOptions = {
   origin: CLIENT_ADDRESS,
@@ -32,12 +31,11 @@ const io = new Server(httpServer, {
   cors: corsOptions,
 });
 
-io.use(verifySocketToken);
+io.use(socketInit);
 
 io.on('connection', (socket) => {
   console.log(`${socket.id} connected...`);
 
-  init(io, socket);
   conversationHandler(io, socket);
 
   socket.on('disconnect', () => {

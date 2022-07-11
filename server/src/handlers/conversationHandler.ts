@@ -4,17 +4,20 @@ import { EventHandler } from '../types/common';
 
 export const conversationHandler: EventHandler = (io, socket) => {
   socket.on('sendMessage', async (message: Message) => {
-    const newMessage = new Message({ ...message });
+    const newMessage = new Message({
+      ...message,
+      senderId: socket.data.user._id,
+      senderUsername: socket.data.user.username,
+    });
 
     try {
       if (message.roomId !== 'everyone') {
         const room = await Room.find({ _id: newMessage.roomId });
         if (!room) {
-          /* TODO: error message */
+          socket.emit('error', 'Room not found...');
           return;
         }
       }
-
       const savedMessage = await newMessage.save();
 
       if (savedMessage.roomId === 'everyone') {

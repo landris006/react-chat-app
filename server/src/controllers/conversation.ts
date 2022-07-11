@@ -66,11 +66,22 @@ export const createRoom = async (
 };
 
 export const deleteRoom = async (req: Request, res: Response) => {
-  /* TODO: authorization */
   try {
     const roomId = req.query.roomId;
     const user = req.body.user;
     const roomToDelete = await Room.findById(roomId);
+
+    if (!roomToDelete) {
+      res.status(403).json({ error: { message: 'Room not found...' } });
+      return;
+    }
+
+    if (user._id !== roomToDelete?.ownerId) {
+      res.status(403).json({
+        error: { message: 'You are not the owner of this room...' },
+      });
+      return;
+    }
 
     const deletedRoom = await Room.findByIdAndDelete(roomId);
 
@@ -86,9 +97,9 @@ export const getAllUsers = async (req: Request, res: Response) => {
     const users = await User.find();
 
     const cleanedUsers: UserType[] = users.map((user) => {
-      const jsObjectUser = user.toObject();
-      delete jsObjectUser.password;
-      return jsObjectUser;
+      const plainObjectUser = user.toObject();
+      delete plainObjectUser.password;
+      return plainObjectUser;
     });
 
     res.status(200).json(cleanedUsers);

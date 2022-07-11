@@ -13,7 +13,9 @@ export const verifyToken = (
   const token = authHeader?.split(' ')[1];
 
   if (!token) {
-    res.status(403).json({ error: { message: 'No token provided...' } });
+    res.status(403).json({
+      error: { message: 'No token provided, try to log in again...' },
+    });
     return;
   }
 

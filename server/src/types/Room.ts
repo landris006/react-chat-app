@@ -1,6 +1,6 @@
 interface Room {
   _id: string;
   name: string;
-  members: User[];
+  members: string[];
   ownerId: string;
 }

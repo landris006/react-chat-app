@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon dist/index.js",
+    "start-prod": "node dist/index.js",
     "watch": "tsc -w",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

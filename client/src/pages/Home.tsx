@@ -2,13 +2,13 @@ import { useEffect } from 'react';
 import { io } from 'socket.io-client';
 import Conversation from '../components/Conversation/Conversation';
 import Rooms from '../components/Rooms/Rooms';
-import { useAppSelector, useErrorMessage } from '../hooks';
+import {useErrorMessage } from '../hooks';
 
 const Home = () => {
   const token = localStorage.getItem('token');
   const { sendError } = useErrorMessage();
 
-  const socket = io('http://localhost:5000', {
+  const socket = io('https://epic-react-chat-server.herokuapp.com', {
     auth: { token: `Bearer ${token}` },
   });
 

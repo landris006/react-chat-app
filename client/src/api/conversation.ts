@@ -6,6 +6,7 @@ import { User } from '../types/User';
 const token = localStorage.getItem('token')!;
 const instance = axios.create({
   baseURL: 'https://epic-react-chat-server.herokuapp.com/conversation',
+  withCredentials: true,
   headers: {
     authorization: `Bearer ${token}`,
   },

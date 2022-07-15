@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const url = 'https://epic-react-chat-server.herokuapp.com:5000/users';
+const url = 'https://epic-react-chat-server.herokuapp.com/users';
 
 export const login = async (loginData: {
   username: string;

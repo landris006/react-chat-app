@@ -7,9 +7,10 @@ import {useErrorMessage } from '../hooks';
 const Home = () => {
   const token = localStorage.getItem('token');
   const { sendError } = useErrorMessage();
-
+  // TODO: FE environment variable
   const socket = io('https://epic-react-chat-server.herokuapp.com', {
     auth: { token: `Bearer ${token}` },
+    withCredentials: true
   });
 
   useEffect(() => {

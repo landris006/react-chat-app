@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { io } from 'socket.io-client';
 import Conversation from '../components/Conversation/Conversation';
 import Rooms from '../components/Rooms/Rooms';
-import {useErrorMessage } from '../hooks';
+import { useErrorMessage } from '../hooks';
 
 const Home = () => {
   const token = localStorage.getItem('token');
@@ -10,7 +10,7 @@ const Home = () => {
   // TODO: FE environment variable
   const socket = io('https://epic-react-chat-server.herokuapp.com', {
     auth: { token: `Bearer ${token}` },
-    withCredentials: true
+    transports: ['websocket'],
   });
 
   useEffect(() => {
